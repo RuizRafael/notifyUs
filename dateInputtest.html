@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="author" content="Rafa"/>
+		<meta name="description" content="PWA WhyNote"/>
+		<meta name="viewport" content="width=device-width, user-scalable=no">
+		<title>WhyNote</title>
+		<script src="sw.js"></script>
+		<style>
+
+		</style>
+		<script>
+		let reg;
+		if (navigator.serviceWorker) {
+
+		     reg = navigator.serviceWorker.register("/sw.js");
+		}
+		function notifyMe() {
+		  // Let's check if the browser supports notifications
+		  if (!("Notification" in window)) {
+		    alert("This browser does not support desktop notification");
+		  }
+
+		  // Let's check whether notification permissions have already been granted
+		  else if (Notification.permission === "granted") {
+		    // If it's okay let's create a notification
+		    var notification = new Notification("Hola bro!");
+		  }
+
+		  // Otherwise, we need to ask the user for permission
+		  else if (Notification.permission !== 'denied') {
+		    Notification.requestPermission(function (permission) {
+		      // If the user accepts, let's create a notification
+		      if (permission === "granted") {
+		        var notification = new Notification("Pedazo noti!");
+		      }
+		    });
+		  }
+
+
+		  // At last, if the user has denied notifications, and you
+		  // want to be respectful there is no need to bother them any more.
+		}
+		function spawnNotification(theBody="Este es el contenido de la mejor nota de la historia",theIcon="icon.png",theTitle="Buenos dias por la mañana") {
+			var options = {
+					body: theBody,
+					icon: theIcon
+			}
+			var n = new Notification(theTitle,options);
+		}
+	
+
+
+		Notification.requestPermission().then(function(result) {
+		  console.log(result);
+		});
+		</script>
+	</head>
+	<body>
+		<button onclick="notifyMe()">Notify me!</button>
+		<button onclick="spawnNotification()">Mandame una noti bro!</button>
+		</body>
+</html>
